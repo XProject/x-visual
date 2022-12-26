@@ -1,37 +1,38 @@
-Client = {
+local Client = {
     defaultlight = {
-        day = { name = "Vehicle Default Lights (Day)", defaultValue = 2, min = 0, max = 10000 },
-        night = { name = "Vehicle Default Lights (Night)", defaultValue = 2, min = 0, max = 10000 }
+        day = { name = "Default Lights (Day)", defaultValue = 2, min = 0, max = 10000 },
+        night = { name = "Default Lights (Night)", defaultValue = 2, min = 0, max = 10000 }
     },
     headlight = {
-        day = { name = "Vehicle Headlights (Day)", defaultValue = 10, min = 0, max = 10000 },
-        night = { name = "Vehicle Headlights (Night)", defaultValue = 10, min = 0, max = 10000 }
+        day = { name = "Headlights (Day)", defaultValue = 10, min = 0, max = 10000 },
+        night = { name = "Headlights (Night)", defaultValue = 10, min = 0, max = 10000 }
     },
     taillight = {
-        day = { name = "Vehicle Taillights (Day)", defaultValue = 25, min = 0, max = 10000 },
-        night = { name = "Vehicle Taillights (Night)", defaultValue = 25, min = 0, max = 10000 }
+        day = { name = "Taillights (Day)", defaultValue = 25, min = 0, max = 10000 },
+        night = { name = "Taillights (Night)", defaultValue = 25, min = 0, max = 10000 }
     },
     indicator = {
-        day = { name = "Vehicle Indicators (Day)", defaultValue = 10, min = 0, max = 10000 },
-        night = { name = "Vehicle Indicators (Night)", defaultValue = 10, min = 0, max = 10000 }
+        day = { name = "Indicators (Day)", defaultValue = 10, min = 0, max = 10000 },
+        night = { name = "Indicators (Night)", defaultValue = 10, min = 0, max = 10000 }
     },
     reversinglight = {
-        day = { name = "Vehicle Reverse Lights (Day)", defaultValue = 20, min = 0, max = 10000 },
-        night = { name = "Vehicle Reverse Lights (Night)", defaultValue = 3, min = 0, max = 10000 }
+        day = { name = "Reverse Lights (Day)", defaultValue = 20, min = 0, max = 10000 },
+        night = { name = "Reverse Lights (Night)", defaultValue = 3, min = 0, max = 10000 }
     },
     brakelight = {
-        day = { name = "Vehicle Brake Lights (Day)", defaultValue = 30, min = 0, max = 10000 },
-        night = { name = "Vehicle Brake Lights (Night)", defaultValue = 30, min = 0, max = 10000 }
+        day = { name = "Brake Lights (Day)", defaultValue = 30, min = 0, max = 10000 },
+        night = { name = "Brake Lights (Night)", defaultValue = 30, min = 0, max = 10000 }
     },
     middlebrakelight = {
-        day = { name = "Vehicle Middle Brake Lights (Day)", defaultValue = 30, min = 0, max = 10000 },
-        night = { name = "Vehicle Middle Brake Lights (Night)", defaultValue = 30, min = 0, max = 10000 }
+        day = { name = "Middle Brake Lights (Day)", defaultValue = 30, min = 0, max = 10000 },
+        night = { name = "Middle Brake Lights (Night)", defaultValue = 30, min = 0, max = 10000 }
     },
     extralight = {
-        day = { name = "Vehicle Extra Lights (Day)", defaultValue = 9, min = 0, max = 10000 },
-        night = { name = "Vehicle Extra Lights (Night)", defaultValue = 9, min = 0, max = 10000 }
+        day = { name = "Extra Lights (Day)", defaultValue = 9, min = 0, max = 10000 },
+        night = { name = "Extra Lights (Night)", defaultValue = 9, min = 0, max = 10000 }
     }
 }
+
 if Config.Menu == "ox_lib" then
     if lib then
         Config.fpsMenu = "x-fps_main_menu"
@@ -40,8 +41,11 @@ if Config.Menu == "ox_lib" then
     end
 elseif Config.Menu == "menuv" then
     if MenuV then
-        Config.fpsMenu = MenuV:CreateMenu("X-FPS", "FPS Menu", "centerright", 31, 255, 34, "size-125", "x-fps", "menuv", "FPS-Menu", "x-fps_namespace")
-        Config.lightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu", "centerright", 31, 255, 34, "size-125", "x-fps", "menuv", "FPS-Menu", "x-fps_namespace")
+        local multiplier = 1
+        Config.fpsMenu = MenuV:CreateMenu("X-FPS", "FPS Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_main_menu", "default")
+        Config.lightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_light_menu", "default")
+        Config.dayLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (DAY)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_day_light_menu", "default")
+        Config.nightLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (NIGHT)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_night_light_menu", "default")
 
         Config.fpsMenu:AddButton({ icon = "✅", label = "FPS Boost", value = "", select = function()
             ClearTimecycleModifier()
@@ -64,15 +68,42 @@ elseif Config.Menu == "menuv" then
         end })
         
         Config.fpsMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu", value = Config.lightsMenu })
+        Config.lightsMenu:On("open", function(menu)
+            menu:ClearItems()
+            multiplier = 1
+            Config.lightsMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu (DAY)", value = Config.dayLightsMenu })
+            Config.lightsMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu (NIGHT)", value = Config.nightLightsMenu })
+            Config.multiplierSlider = Config.lightsMenu:AddSlider({ icon = 'Ⓜ', label = 'Multiplier', value = multiplier, values = {
+                { label = '1x', value = 1 },
+                { label = '10x', value = 10 },
+                { label = '100x', value = 100 },
+                { label = '1000x', value = 1000 }
+            }})
+            Config.multiplierSlider:On('change', function(item, newValue, _) multiplier = item.Values[newValue].Value end)
+        end)
 
-        for name, v in pairs(Client) do
-            for time, light in pairs(v) do
-                light.handler = Config.lightsMenu:AddRange({ icon = "💡", label = light.name, min = light.min, max = light.max, value = light.defaultValue, saveOnUpdate = true })
-                light.handler:On("change", function(_, newValue, _)
-                    SetVisualSettingFloat(("car.%s.%s.emissive.on"):format(name, time), newValue + 0.0)
-                end)
+        local function setUpLightMenuButtons(menuToSet, timeToSet)
+            for name, v in pairs(Client) do
+                for time, light in pairs(v) do
+                    if time == timeToSet then
+                        light.handler = menuToSet:AddRange({ icon = "💡", label = light.name, min = light.min, max = light.max / multiplier, value = (light.modifiedValue or light.defaultValue) / multiplier, saveOnUpdate = false })
+                        light.handler:On("change", function(_, newValue, _)
+                            light.modifiedValue = newValue * multiplier
+                            SetVisualSettingFloat(("car.%s.%s.emissive.on"):format(name, time), light.modifiedValue + 0.0)
+                        end)
+                    end
+                end
             end
         end
+
+        Config.dayLightsMenu:On("open", function(menu)
+            menu:ClearItems()
+            setUpLightMenuButtons(Config.dayLightsMenu, "day")
+        end)
+        Config.nightLightsMenu:On("open", function(menu)
+            menu:ClearItems()
+            setUpLightMenuButtons(Config.nightLightsMenu, "night")
+        end)
     else
         error("Error: MenuV resource is not properly loaded inside x-fps!")
     end

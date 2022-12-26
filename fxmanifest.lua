@@ -1,23 +1,24 @@
-fx_version 'cerulean'
-use_experimental_fxv2_oal 'yes'
-lua54 'yes'
-game 'gta5'
+fx_version "cerulean"
+use_experimental_fxv2_oal "yes"
+lua54 "yes"
+game "gta5"
 
-description 'x-fps'
-version '0.0.0'
+description "x-fps"
+version "0.0.0"
 
 files {
-    'files/*'
+    "files/*"
 }
 
 shared_scripts {
-    'shared/*.lua'
+    "shared/*.lua"
 }
 
 server_scripts {
-    'server/*.lua'
+    "server/*.lua"
 }
 
 client_scripts {
-    'client/*.lua'
+    "shared/config.lua",
+    "client/*.lua"
 }
