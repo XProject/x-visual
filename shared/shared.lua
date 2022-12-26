@@ -17,19 +17,19 @@ if not IsDuplicityVersion() then -- client
 end
 
 function stringsplit(inputString, separator)
-	if not separator then
-		separator = "%s"
-	end
-	local t, i = {}, 1
-	for str in string.gmatch(inputString, "([^"..separator.."]+)") do
-		t[i] = str
-		i = i + 1
-	end
-	return t
+    if not separator then
+        separator = "%s"
+    end
+    local t, i = {}, 1
+    for str in string.gmatch(inputString, "([^"..separator.."]+)") do
+        t[i] = str
+        i = i + 1
+    end
+    return t
 end
 
 function starts_with(inputString, start)
-	return inputString:sub(1, #start) == start
+    return inputString:sub(1, #start) == start
 end
 
 function dumpTable(table, nb)
