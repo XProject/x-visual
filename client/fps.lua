@@ -41,7 +41,6 @@ if Config.Menu == "ox_lib" then
     end
 elseif Config.Menu == "menuv" then
     if MenuV then
-        local multiplier = 1
         Config.fpsMenu = MenuV:CreateMenu("X-FPS", "FPS Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_main_menu", "default")
         Config.lightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_light_menu", "default")
         Config.dayLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (DAY)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_day_light_menu", "default")
@@ -70,25 +69,25 @@ elseif Config.Menu == "menuv" then
         Config.fpsMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu", value = Config.lightsMenu })
         Config.lightsMenu:On("open", function(menu)
             menu:ClearItems()
-            multiplier = 1
+            Config.multiplier = 1
             Config.lightsMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu (DAY)", value = Config.dayLightsMenu })
             Config.lightsMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu (NIGHT)", value = Config.nightLightsMenu })
-            Config.multiplierSlider = Config.lightsMenu:AddSlider({ icon = 'Ⓜ', label = 'Multiplier', value = multiplier, values = {
+            Config.multiplierSlider = Config.lightsMenu:AddSlider({ icon = 'Ⓜ', label = 'Multiplier', value = Config.multiplier, values = {
                 { label = '1x', value = 1 },
                 { label = '10x', value = 10 },
                 { label = '100x', value = 100 },
                 { label = '1000x', value = 1000 }
             }})
-            Config.multiplierSlider:On('change', function(item, newValue, _) multiplier = item.Values[newValue].Value end)
+            Config.multiplierSlider:On('change', function(item, newValue, _) Config.multiplier = item.Values[newValue].Value end)
         end)
 
         local function setUpLightMenuButtons(menuToSet, timeToSet)
             for name, v in pairs(Client) do
                 for time, light in pairs(v) do
                     if time == timeToSet then
-                        light.handler = menuToSet:AddRange({ icon = "💡", label = light.name, min = light.min, max = light.max / multiplier, value = (light.modifiedValue or light.defaultValue) / multiplier, saveOnUpdate = false })
+                        light.handler = menuToSet:AddRange({ icon = "💡", label = light.name, min = light.min, max = light.max / Config.multiplier, value = (light.modifiedValue or light.defaultValue) / Config.multiplier, saveOnUpdate = false })
                         light.handler:On("change", function(_, newValue, _)
-                            light.modifiedValue = newValue * multiplier
+                            light.modifiedValue = newValue * Config.multiplier
                             SetVisualSettingFloat(("car.%s.%s.emissive.on"):format(name, time), light.modifiedValue + 0.0)
                         end)
                     end
