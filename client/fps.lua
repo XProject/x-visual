@@ -3,7 +3,9 @@ Config.visualTimecycles = {
     [2] = { name = "Cinema (FPS Boost)", modifier = "cinema", icon = "🎥" },
     [3] = { name = "Life (FPS Boost)", modifier = "LifeInvaderLOD" },
     [4] = { name = "Reduce Distance (FPS Boost)", modifier = "ReduceDrawDistanceMission", icon = "⬇" },
-    [5] = { name = "Color Saturation", modifier = "rply_saturation" },
+    [5] = { name = "Color Saturation", modifier = "rply_saturation", icon = "✨" },
+    [6] = { name = "Graphic Changer", modifier = "MP_Powerplay_blend", extraModifier = "reflection_correct_ambient" },
+    [8] = { name = "Improved Lights", modifier = "tunnel" }
 }
 Config.vehicleLightsSetting = {
     defaultlight = {
@@ -60,11 +62,12 @@ elseif Config.Menu == "menuv" then
         Config.mainMenu:AddButton({ icon = "👓", label = "Visual Modifier Menu", value = Config.visualMenu })
 
         local function setUpVisualTimecycleMenuButtons(menuToSet)
-            for _, value in pairs(Config.visualTimecycles) do
-                menuToSet:AddButton({ icon = value.icon or "❇", label = value.name, value = "", select = function()
+            for index in pairs(Config.visualTimecycles) do
+                menuToSet:AddButton({ icon = Config.visualTimecycles[index].icon or "❇", label = Config.visualTimecycles[index].name, value = "", select = function()
                     ClearTimecycleModifier()
                     ClearExtraTimecycleModifier()
-                    SetTimecycleModifier(value.modifier)
+                    SetTimecycleModifier(Config.visualTimecycles[index].modifier)
+                    if Config.visualTimecycles[index].extraModifier then SetExtraTimecycleModifier(Config.visualTimecycles[index].extraModifier) end
                 end })
             end
             menuToSet:AddButton({ icon = "🔁", label = "Reset", value = "", select = function()
