@@ -1,8 +1,7 @@
 CreateThread(function()
 	local settingsFile = LoadResourceFile(GetCurrentResourceName(), "files/visualsettings.dat")
-    print("here", settingsFile)
 	local lines = stringsplit(settingsFile, "\n")
-	for k, v in ipairs(lines) do
+	for _, v in ipairs(lines) do
 		if not starts_with(v, '#') and not starts_with(v, '//') and (v ~= "" or v ~= " ") and #v > 1 then
 			v = v:gsub("%s+", " ")
 			local setting = stringsplit(v, " ")
