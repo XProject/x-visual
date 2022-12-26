@@ -22,3 +22,10 @@ client_scripts {
     "shared/config.lua",
     "client/*.lua"
 }
+
+escrow_ignore {
+    "files/*",
+    "shared/*.lua",
+    "server/*.lua",
+    "client/*.lua"
+}
