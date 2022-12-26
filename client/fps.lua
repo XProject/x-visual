@@ -1,4 +1,11 @@
-local Client = {
+Config.visualTimecycles = {
+    [1] = { name = "Tunnel (FPS Boost)", modifier = "yell_tunnel_nodirect", icon = "💯" },
+    [2] = { name = "Cinema (FPS Boost)", modifier = "cinema", icon = "🎥" },
+    [3] = { name = "Life (FPS Boost)", modifier = "LifeInvaderLOD" },
+    [4] = { name = "Reduce Distance (FPS Boost)", modifier = "ReduceDrawDistanceMission", icon = "⬇" },
+    [5] = { name = "Color Saturation", modifier = "rply_saturation" },
+}
+Config.vehicleLightsSetting = {
     defaultlight = {
         day = { name = "Default Lights (Day)", defaultValue = 2, min = 0, max = 10000 },
         night = { name = "Default Lights (Night)", defaultValue = 2, min = 0, max = 10000 }
@@ -35,38 +42,43 @@ local Client = {
 
 if Config.Menu == "ox_lib" then
     if lib then
-        Config.fpsMenu = "x-fps_main_menu"
+        Config.mainMenu = "x-fps_main_menu"
     else
         error("Error: ox_lib resource is not properly loaded inside x-fps!")
     end
 elseif Config.Menu == "menuv" then
     if MenuV then
-        Config.fpsMenu = MenuV:CreateMenu("X-FPS", "FPS Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_main_menu", "default")
-        Config.lightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_light_menu", "default")
-        Config.dayLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (DAY)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_day_light_menu", "default")
-        Config.nightLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (NIGHT)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "X-FPS_night_light_menu", "default")
+        Config.mainMenu = MenuV:CreateMenu("X-FPS", "Main Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_main_menu", "default")
+        Config.fpsMenu = MenuV:CreateMenu("X-FPS", "FPS Booster Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_fps_menu", "default")
+        Config.visualMenu = MenuV:CreateMenu("X-FPS", "Visual Modifier Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_visual_menu", "default")
+        Config.lightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_light_menu", "default")
+        Config.dayLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (DAY)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_day_light_menu", "default")
+        Config.nightLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (NIGHT)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_night_light_menu", "default")
 
-        Config.fpsMenu:AddButton({ icon = "✅", label = "FPS Boost", value = "", select = function()
-            ClearTimecycleModifier()
-            ClearExtraTimecycleModifier()
-            SetTimecycleModifier("yell_tunnel_nodirect")
-        end })
+        Config.mainMenu:AddButton({ icon = "🆙", label = "FPS Booster Menu", value = Config.fpsMenu })
 
-        Config.fpsMenu:AddButton({ icon = "✅", label = "Cinema Mode", value = "", select = function()
-            ClearTimecycleModifier()
-            ClearExtraTimecycleModifier()
-            SetTimecycleModifier("cinema")
-        end })
+        Config.mainMenu:AddButton({ icon = "👓", label = "Visual Modifier Menu", value = Config.visualMenu })
 
-        Config.fpsMenu:AddButton({ icon = "✅", label = "Reset", value = "", select = function()
-            ClearTimecycleModifier()
-            ClearExtraTimecycleModifier()
-            SetTimecycleModifier()
-            ClearTimecycleModifier()
-            ClearExtraTimecycleModifier()
-        end })
+        local function setUpVisualTimecycleMenuButtons(menuToSet)
+            for _, value in pairs(Config.visualTimecycles) do
+                menuToSet:AddButton({ icon = value.icon or "❇", label = value.name, value = "", select = function()
+                    ClearTimecycleModifier()
+                    ClearExtraTimecycleModifier()
+                    SetTimecycleModifier(value.modifier)
+                end })
+            end
+            menuToSet:AddButton({ icon = "🔁", label = "Reset", value = "", select = function()
+                ClearTimecycleModifier()
+                ClearExtraTimecycleModifier()
+                SetTimecycleModifier()
+                ClearTimecycleModifier()
+                ClearExtraTimecycleModifier()
+            end })
+        end
+
+        do setUpVisualTimecycleMenuButtons(Config.visualMenu) end
         
-        Config.fpsMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu", value = Config.lightsMenu })
+        Config.mainMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu", value = Config.lightsMenu })
         Config.lightsMenu:On("open", function(menu)
             menu:ClearItems()
             Config.multiplier = 1
@@ -82,7 +94,7 @@ elseif Config.Menu == "menuv" then
         end)
 
         local function setUpLightMenuButtons(menuToSet, timeToSet)
-            for name, v in pairs(Client) do
+            for name, v in pairs(Config.vehicleLightsSetting) do
                 for time, light in pairs(v) do
                     if time == timeToSet then
                         light.handler = menuToSet:AddRange({ icon = "💡", label = light.name, min = light.min, max = light.max / Config.multiplier, value = (light.modifiedValue or light.defaultValue) / Config.multiplier, saveOnUpdate = false })
@@ -99,6 +111,7 @@ elseif Config.Menu == "menuv" then
             menu:ClearItems()
             setUpLightMenuButtons(Config.dayLightsMenu, "day")
         end)
+
         Config.nightLightsMenu:On("open", function(menu)
             menu:ClearItems()
             setUpLightMenuButtons(Config.nightLightsMenu, "night")
@@ -112,8 +125,8 @@ TriggerEvent("chat:addSuggestion", "/"..Config.Command, "helps players to increa
 
 RegisterCommand(Config.Command, function()
     if Config.Menu == "ox_lib" and lib then
-        lib.showMenu(Config.fpsMenu)
+        lib.showMenu(Config.mainMenu)
     elseif Config.Menu == "menuv" and MenuV then
-        MenuV:OpenMenu(Config.fpsMenu)
+        MenuV:OpenMenu(Config.mainMenu)
     end
 end)
