@@ -131,8 +131,7 @@ if Config.Menu == "ox_lib" then
         local function calculateLightProgress(light)
             local max = light.max / Config.multiplier
             local value = (light.modifiedValue or light.defaultValue) / Config.multiplier
-            light.progress = (value * 100) / max
-            return light.progress
+            return (value * 100) / max
         end
         local function onLightSettingChange(light, newValue, settingName, time, selectedOption, menuToSet)
             light.modifiedValue = newValue * Config.multiplier
@@ -250,10 +249,11 @@ elseif Config.Menu == "menuv" then
         Config.dayLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (DAY)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_day_light_menu", "default")
         Config.nightLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (NIGHT)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_night_light_menu", "default")
 
+        -- FPS Booster Menu
         Config.mainMenu:AddButton({ icon = "🆙", label = "FPS Booster Menu", value = Config.fpsMenu })
 
+        -- Visual Modifier Menu
         Config.mainMenu:AddButton({ icon = "👓", label = "Visual Modifier Menu", value = Config.visualMenu })
-
         local function setUpVisualTimecycleMenuButtons(menuToSet)
             for index in pairs(Config.visualTimecycles) do
                 menuToSet:AddButton({ icon = Config.visualTimecycles[index].icon or "❇", label = Config.visualTimecycles[index].name, value = "", select = function()
@@ -271,9 +271,9 @@ elseif Config.Menu == "menuv" then
                 ClearExtraTimecycleModifier()
             end })
         end
-
         do setUpVisualTimecycleMenuButtons(Config.visualMenu) end
         
+        -- Vehicle Lights Menu
         Config.mainMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu", value = Config.lightsMenu })
         Config.lightsMenu:On("open", function(menu)
             menu:ClearItems()
@@ -288,7 +288,6 @@ elseif Config.Menu == "menuv" then
             }})
             Config.multiplierSlider:On("change", function(item, newValue, _) Config.multiplier = item.Values[newValue].Value end)
         end)
-
         local function setUpLightMenuButtons(menuToSet, timeToSet)
             for name, v in pairs(Config.vehicleLightsSetting) do
                 for time, light in pairs(v) do
@@ -302,12 +301,10 @@ elseif Config.Menu == "menuv" then
                 end
             end
         end
-
         Config.dayLightsMenu:On("open", function(menu)
             menu:ClearItems()
             setUpLightMenuButtons(Config.dayLightsMenu, "day")
         end)
-
         Config.nightLightsMenu:On("open", function(menu)
             menu:ClearItems()
             setUpLightMenuButtons(Config.nightLightsMenu, "night")
