@@ -45,6 +45,93 @@ Config.vehicleLightsSetting = {
 if Config.Menu == "ox_lib" then
     if lib then
         Config.mainMenu = "x-fps_main_menu"
+        Config.fpsMenu = "x-fps_fps_menu"
+        Config.visualMenu = "x-fps_visual_menu"
+        Config.lightsMenu = "x-fps_light_menu"
+        Config.dayLightsMenu = "x-fps_day_light_menu"
+        Config.nightLightsMenu = "x-fps_night_light_menu"
+
+        local function goBackToMainMenu(keyPressed)
+            if keyPressed and keyPressed == "Backspace" then
+                lib.showMenu(Config.mainMenu)
+            end
+        end
+
+        lib.registerMenu({
+            id = Config.mainMenu,
+            title = "X-FPS",
+            position = "top-right",
+            options = {
+                { label = "🆙 FPS Booster Menu", args = { menu = Config.fpsMenu } },
+                { label = "👓 Visual Modifier Menu", args = { menu = Config.visualMenu } },
+                { label = "💡 Vehicle Lights Menu", args = { menu = Config.lightsMenu } }
+            }
+        },
+        function(_, _, args)
+            if args.menu then
+                lib.showMenu(args.menu)
+            end
+        end)
+        lib.registerMenu({
+            id = Config.fpsMenu,
+            title = "FPS Booster Menu",
+            position = "top-right",
+            options = {
+                { label = "🆙 FPS Booster Menu" }
+            },
+            onClose = goBackToMainMenu
+        })
+
+        local function setUpVisualTimecycleMenuButtons()
+            local options = {}
+            for index in pairs(Config.visualTimecycles) do
+                table.insert(options, {
+                    label = (Config.visualTimecycles[index].icon or "❇").." "..Config.visualTimecycles[index].name,
+                    args = { onClick = function()
+                        ClearTimecycleModifier()
+                        ClearExtraTimecycleModifier()
+                        SetTimecycleModifier(Config.visualTimecycles[index].modifier)
+                        if Config.visualTimecycles[index].extraModifier then SetExtraTimecycleModifier(Config.visualTimecycles[index].extraModifier) end
+                    end },
+                    close = false
+                })
+            end
+            table.insert(options, {
+                label = "🔁 Reset",
+                args = { onClick = function()
+                    ClearTimecycleModifier()
+                    ClearExtraTimecycleModifier()
+                    SetTimecycleModifier()
+                    ClearTimecycleModifier()
+                    ClearExtraTimecycleModifier()
+                end },
+                close = false
+            })
+            return options
+        end
+        lib.registerMenu({
+            id = Config.visualMenu,
+            title = "Visual Modifier Menu",
+            position = "top-right",
+            options = setUpVisualTimecycleMenuButtons(),
+            onClose = goBackToMainMenu,
+        },
+        function(_, _, args)
+            if args.onClick then
+                args.onClick()
+            end
+        end)
+        lib.registerMenu({
+            id = Config.lightsMenu,
+            title = "Vehicle Lights Menu",
+            position = "top-right",
+            options = {
+                { label = "💡 Vehicle Lights Menu (DAY)", args = { menu = Config.dayLightsMenu } },
+                { label = "💡 Vehicle Lights Menu (NIGHT)", args = { menu = Config.nightLightsMenu } },
+                { label = "Ⓜ Multiplier", values = { "1x", "10x", "100x", "1000x" }, defaultIndex = 1 },
+            },
+            onClose = goBackToMainMenu
+        })
     else
         error("Error: ox_lib resource is not properly loaded inside x-fps!")
     end
@@ -87,13 +174,13 @@ elseif Config.Menu == "menuv" then
             Config.multiplier = 1
             Config.lightsMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu (DAY)", value = Config.dayLightsMenu })
             Config.lightsMenu:AddButton({ icon = "💡", label = "Vehicle Lights Menu (NIGHT)", value = Config.nightLightsMenu })
-            Config.multiplierSlider = Config.lightsMenu:AddSlider({ icon = 'Ⓜ', label = 'Multiplier', value = Config.multiplier, values = {
-                { label = '1x', value = 1 },
-                { label = '10x', value = 10 },
-                { label = '100x', value = 100 },
-                { label = '1000x', value = 1000 }
+            Config.multiplierSlider = Config.lightsMenu:AddSlider({ icon = "Ⓜ", label = "Multiplier", value = Config.multiplier, values = {
+                { label = "1x", value = 1 },
+                { label = "10x", value = 10 },
+                { label = "100x", value = 100 },
+                { label = "1000x", value = 1000 }
             }})
-            Config.multiplierSlider:On('change', function(item, newValue, _) Config.multiplier = item.Values[newValue].Value end)
+            Config.multiplierSlider:On("change", function(item, newValue, _) Config.multiplier = item.Values[newValue].Value end)
         end)
 
         local function setUpLightMenuButtons(menuToSet, timeToSet)
