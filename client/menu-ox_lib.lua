@@ -84,54 +84,43 @@ if Config.Menu == "ox_lib" then
 
         -- Vehicle Lights Menu
         Config.multiplier = 1
+        local generateLightButton, onLightSettingChanged -- forward declaration of local functions to be known to each other!
         local function calculateLightProgress(light)
             local max = light.max / Config.multiplier
             local value = (light.modifiedValue or light.defaultValue) / Config.multiplier
             return (value * 100) / max
         end
-        local function onLightSettingChange(light, newValue, settingName, time, selectedOption, menuToSet)
-            light.modifiedValue = newValue * Config.multiplier
-            SetVisualSettingFloat(("car.%s.%s.emissive.on"):format(settingName, time), light.modifiedValue + 0.0)
-            lib.setMenuOptions(menuToSet, {
+        function generateLightButton(light, settingName, time)
+            return {
                 label = "💡 "..light.name,
                 progress = calculateLightProgress(light),
-                close = false,
                 args = { onClick = function(selected)
                     Config.openMenu = lib.getOpenMenu()
                     lib.hideMenu()
                     local input = lib.inputDialog("X-FPS", {
-                        { type = "slider", label = light.name, default = light.modifiedValue / Config.multiplier, min = light.min, max = light.max / Config.multiplier }
+                        { type = "slider", label = light.name, default = (light.modifiedValue or light.defaultValue) / Config.multiplier, min = light.min, max = light.max / Config.multiplier }
                     })
                     if input then
-                        onLightSettingChange(light, input[1], settingName, time, selected, Config.openMenu)
+                        onLightSettingChanged(light, input[1], settingName, time, selected, Config.openMenu)
                     end
                     lib.showMenu(Config.openMenu)
                     Config.openMenu = nil
-                end }
-            }, selectedOption)
+                    input = nil
+                end },
+                close = false
+            }
+        end
+        function onLightSettingChanged(light, newValue, settingName, time, selectedOption, menuToSet)
+            light.modifiedValue = newValue * Config.multiplier
+            SetVisualSettingFloat(("car.%s.%s.emissive.on"):format(settingName, time), light.modifiedValue + 0.0)
+            lib.setMenuOptions(menuToSet, generateLightButton(light, settingName, time), selectedOption)
         end
         local function setUpLightMenuButtons(timeToSet)
             local options = {}
             for name, v in pairs(Config.vehicleLightsSetting) do
                 for time, light in pairs(v) do
                     if time == timeToSet then
-                        table.insert(options, {
-                            label = "💡 "..light.name,
-                            progress = calculateLightProgress(light),
-                            args = { onClick = function(selected)
-                                Config.openMenu = lib.getOpenMenu()
-                                lib.hideMenu()
-                                local input = lib.inputDialog("X-FPS", {
-                                    { type = "slider", label = light.name, default = light.defaultValue / Config.multiplier, min = light.min, max = light.max / Config.multiplier }
-                                })
-                                if input then
-                                    onLightSettingChange(light, input[1], name, time, selected, Config.openMenu)
-                                end
-                                lib.showMenu(Config.openMenu)
-                                Config.openMenu = nil
-                            end },
-                            close = false
-                        })
+                        table.insert(options, generateLightButton(light, name, time))
                     end
                 end
             end
