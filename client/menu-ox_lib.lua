@@ -84,13 +84,13 @@ if Config.Menu == "ox_lib" then
 
         -- Vehicle Lights Menu
         Config.multiplier = 1
-        local generateLightButton, onLightSettingChanged -- forward declaration of local functions to be known to each other!
+        local onLightSettingChanged -- forward declaration of local function to be known to generateLightButton function
         local function calculateLightProgress(light)
             local max = light.max / Config.multiplier
             local value = (light.modifiedValue or light.defaultValue) / Config.multiplier
             return (value * 100) / max
         end
-        function generateLightButton(light, settingName, time)
+        local function generateLightButton(light, settingName, time)
             return {
                 label = "💡 "..light.name,
                 progress = calculateLightProgress(light),
