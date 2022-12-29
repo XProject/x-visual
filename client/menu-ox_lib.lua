@@ -1,11 +1,11 @@
 if Config.Menu == "ox_lib" then
     if lib then
-        Config.mainMenu = "x-fps_main_menu"
-        Config.fpsMenu = "x-fps_fps_menu"
-        Config.visualMenu = "x-fps_visual_menu"
-        Config.lightsMenu = "x-fps_light_menu"
-        Config.dayLightsMenu = "x-fps_day_light_menu"
-        Config.nightLightsMenu = "x-fps_night_light_menu"
+        Config.mainMenu = "x-visual_main_menu"
+        Config.fpsMenu = "x-visual_fps_menu"
+        Config.visualMenu = "x-visual_visual_menu"
+        Config.lightsMenu = "x-visual_light_menu"
+        Config.dayLightsMenu = "x-visual_day_light_menu"
+        Config.nightLightsMenu = "x-visual_night_light_menu"
 
         local function goBack(keyPressed, menuToGoBack)
             if keyPressed and keyPressed == "Backspace" then
@@ -16,7 +16,7 @@ if Config.Menu == "ox_lib" then
         -- Main Menu
         lib.registerMenu({
             id = Config.mainMenu,
-            title = "X-FPS",
+            title = "X-VISUAL",
             position = "top-right",
             options = {
                 { label = "🆙 FPS Booster Menu", args = { menu = Config.fpsMenu } },
@@ -121,7 +121,7 @@ if Config.Menu == "ox_lib" then
                 args = { onClick = function(selected)
                     Config.openMenu = lib.getOpenMenu()
                     lib.hideMenu()
-                    local input = lib.inputDialog("X-FPS", {
+                    local input = lib.inputDialog("X-VISUAL", {
                         { type = "slider", label = light.name, default = (light.modifiedValue or light.defaultValue) / Config.multiplier, min = light.min, max = light.max / Config.multiplier }
                     })
                     if input then
@@ -207,6 +207,6 @@ if Config.Menu == "ox_lib" then
             end
         end)
     else
-        error("Error: ox_lib resource is not properly loaded inside x-fps!")
+        error("Error: ox_lib resource is not properly loaded inside x-visual!")
     end
 end

@@ -1,4 +1,4 @@
-# x-fps
+# x-visual
 <hr>
 <br>
 <table align='center'>
@@ -11,7 +11,7 @@
     
   
 <tr><td>
-<p align="center"><a href='https://github.com/XProject/x-fps'>GitHub</a></p>
+<p align="center"><a href='https://github.com/XProject/x-visual'>GitHub</a></p>
 </td></tr>
 <tr><td>
 <p align="center"><a href=''>FiveM Forum Post</a></p>

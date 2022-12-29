@@ -1,11 +1,11 @@
 if Config.Menu == "menuv" then
     if MenuV then
-        Config.mainMenu = MenuV:CreateMenu("X-FPS", "Main Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_main_menu", "default")
-        Config.fpsMenu = MenuV:CreateMenu("X-FPS", "FPS Booster Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_fps_menu", "default")
-        Config.visualMenu = MenuV:CreateMenu("X-FPS", "Visual Modifier Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_visual_menu", "default")
-        Config.lightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_light_menu", "default")
-        Config.dayLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (DAY)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_day_light_menu", "default")
-        Config.nightLightsMenu = MenuV:CreateMenu("X-FPS", "Vehicle Lights Menu (NIGHT)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-fps_night_light_menu", "default")
+        Config.mainMenu = MenuV:CreateMenu("X-VISUAL", "Main Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-visual_main_menu", "default")
+        Config.fpsMenu = MenuV:CreateMenu("X-VISUAL", "FPS Booster Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-visual_fps_menu", "default")
+        Config.visualMenu = MenuV:CreateMenu("X-VISUAL", "Visual Modifier Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-visual_visual_menu", "default")
+        Config.lightsMenu = MenuV:CreateMenu("X-VISUAL", "Vehicle Lights Menu", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-visual_light_menu", "default")
+        Config.dayLightsMenu = MenuV:CreateMenu("X-VISUAL", "Vehicle Lights Menu (DAY)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-visual_day_light_menu", "default")
+        Config.nightLightsMenu = MenuV:CreateMenu("X-VISUAL", "Vehicle Lights Menu (NIGHT)", "centerright", 31, 255, 34, "size-150", "default", "menuv", "x-visual_night_light_menu", "default")
 
         -- FPS Booster Menu
         Config.mainMenu:AddButton({ icon = "🆙", label = "FPS Booster Menu", value = Config.fpsMenu })
@@ -79,6 +79,6 @@ if Config.Menu == "menuv" then
             setUpLightMenuButtons(Config.nightLightsMenu, "night")
         end)
     else
-        error("Error: MenuV resource is not properly loaded inside x-fps!")
+        error("Error: MenuV resource is not properly loaded inside x-visual!")
     end
 end
