@@ -36,72 +36,115 @@ local function GetWorldObjects()
     return EnumerateEntities(FindFirstObject, FindNextObject, EndFindObject)
 end
 
-Config.fpsSettings = {
-    ulow = function(playerPedId)
-        for obj in GetWorldObjects() do
-            if not IsEntityOnScreen(obj) then
-                SetEntityAlpha(obj, 0)
-                if not IsEntityAMissionEntity(obj) then
-                    SetEntityAsNoLongerNeeded(obj)
-                end
-            else
-                if GetEntityAlpha(obj) == 0 then
-                    SetEntityAlpha(obj, 210)
-                end
+local function GetWorldPeds()
+    return EnumerateEntities(FindFirstPed, FindNextPed, EndFindPed)
+end
+
+local function GetWorldVehicles()
+    return EnumerateEntities(FindFirstVehicle, FindNextVehicle, EndFindVehicle)
+end
+
+local function modifyWorldObjects(alpha, distance)
+    for obj in GetWorldObjects() do
+        if not IsEntityOnScreen(obj) and #(Config.playerCoords - GetEntityCoords(obj)) > distance then
+            SetEntityAlpha(obj, 0)
+            if not IsEntityAMissionEntity(obj) then
+                SetEntityAsNoLongerNeeded(obj)
             end
-            SetPedAoBlobRendering(obj, false)
-            Wait(0)
+        else
+            if GetEntityAlpha(obj) ~= alpha then
+                SetEntityAlpha(obj, alpha)
+            end
         end
+        Wait(0)
+    end
+end
+
+local function modifyWorldPeds(alpha, distance)
+    for obj in GetWorldPeds() do
+        if not IsEntityOnScreen(obj) and #(Config.playerCoords - GetEntityCoords(obj)) > distance then
+            SetEntityAlpha(obj, 0)
+            if not IsEntityAMissionEntity(obj) then
+                SetEntityAsNoLongerNeeded(obj)
+            end
+        else
+            if GetEntityAlpha(obj) ~= alpha then
+                SetEntityAlpha(obj, alpha)
+            end
+        end
+        SetPedAoBlobRendering(obj, false)
+        Wait(0)
+    end
+end
+
+local function modifyWorldVehicles(alpha, distance)
+    for obj in GetWorldVehicles() do
+        if not IsEntityOnScreen(obj) and #(Config.playerCoords - GetEntityCoords(obj)) > distance then
+            SetEntityAlpha(obj, 0)
+            if not IsEntityAMissionEntity(obj) then
+                SetEntityAsNoLongerNeeded(obj)
+            end
+        else
+            if GetEntityAlpha(obj) ~= alpha then
+                SetEntityAlpha(obj, alpha)
+            end
+        end
+        Wait(0)
+    end
+end
+
+Config.fpsSettings = {
+    ulow_alpha = { world = 210, ped = 245, vehicle = 255 },
+    ulow_distance = { world = 40, ped = 40, vehicle = 40 },
+    ulow = function()
+        modifyWorldObjects(Config.fpsSettings.ulow_alpha.world, Config.fpsSettings.ulow_distance.world)
+        modifyWorldPeds(Config.fpsSettings.ulow_alpha.ped, Config.fpsSettings.ulow_distance.ped)
+        modifyWorldVehicles(Config.fpsSettings.ulow_alpha.vehicle, Config.fpsSettings.ulow_distance.vehicle)
         DisableOcclusionThisFrame()
         SetDisableDecalRenderingThisFrame()
-        RemoveParticleFxInRange(GetEntityCoords(playerPedId), 10.0)
+        RemoveParticleFxInRange(Config.playerCoords, 10.0)
         OverrideLodscaleThisFrame(0.4)
     end,
-    low = function(playerPedId)
-        for obj in GetWorldObjects() do
-            if not IsEntityOnScreen(obj) then
-                SetEntityAlpha(obj, 0)
-                if not IsEntityAMissionEntity(obj) then
-                    SetEntityAsNoLongerNeeded(obj)
-                end
-            else
-                if GetEntityAlpha(obj) == 0 then
-                    SetEntityAlpha(obj, 210)
-                end
-            end
-            SetPedAoBlobRendering(obj, false)
-            Wait(0)
-        end
+    low_alpha = { world = 210, ped = 250, vehicle = 255 },
+    low_distance = { world = 60, ped = 60, vehicle = 60 },
+    low = function()
+        modifyWorldObjects(Config.fpsSettings.low_alpha.world, Config.fpsSettings.low_distance.world)
+        modifyWorldPeds(Config.fpsSettings.low_alpha.ped, Config.fpsSettings.low_distance.ped)
+        modifyWorldVehicles(Config.fpsSettings.low_alpha.vehicle, Config.fpsSettings.low_distance.vehicle)
         SetDisableDecalRenderingThisFrame()
-        RemoveParticleFxInRange(GetEntityCoords(playerPedId), 10.0)
+        RemoveParticleFxInRange(Config.playerCoords, 10.0)
         OverrideLodscaleThisFrame(0.6)
     end,
-    medium = function(_)
-        for obj in GetWorldObjects() do
-            if not IsEntityOnScreen(obj) then
-                SetEntityAlpha(obj, 0)
-                if not IsEntityAMissionEntity(obj) then
-                    SetEntityAsNoLongerNeeded(obj)
-                end
-            else
-                if GetEntityAlpha(obj) == 0 then
-                    SetEntityAlpha(obj, 245)
-                end
-            end
-            SetPedAoBlobRendering(obj, true)
-            Wait(0)
-        end
+    medium_alpha = { world = 245, ped = 255, vehicle = 255 },
+    medium_distance = { world = 85, ped = 85, vehicle = 85 },
+    medium = function()
+        modifyWorldObjects(Config.fpsSettings.medium_alpha.world, Config.fpsSettings.medium_distance.world)
+        modifyWorldPeds(Config.fpsSettings.medium_alpha.ped, Config.fpsSettings.medium_distance.ped)
+        modifyWorldVehicles(Config.fpsSettings.medium_alpha.vehicle, Config.fpsSettings.medium_distance.vehicle)
         OverrideLodscaleThisFrame(0.8)
     end,
-    reset = function(_)
+    reset = function()
         for obj in GetWorldObjects() do
+            if GetEntityAlpha(obj) ~= 255 then
+                SetEntityAlpha(obj, 255)
+            end
+            Wait(0)
+        end
+        for obj in GetWorldPeds() do
             if GetEntityAlpha(obj) ~= 255 then
                 SetEntityAlpha(obj, 255)
             end
             SetPedAoBlobRendering(obj, true)
             Wait(0)
         end
+        for obj in GetWorldVehicles() do
+            if GetEntityAlpha(obj) ~= 255 then
+                SetEntityAlpha(obj, 255)
+            end
+            Wait(0)
+        end
         OverrideLodscaleThisFrame(1.0)
+        DisableVehicleDistantlights(false)
     end
 }
 
@@ -113,7 +156,8 @@ local function runThreads(index)
         local type = Config.fpsBoosterTypes[index].type
         while Config.fpsBoosterTypes[index].isFpsThreadRunning and Config.fpsBoosterType == type do
             Config.playerPedId = PlayerPedId()
-            Config.fpsSettings[type](Config.playerPedId)
+            Config.playerCoords = GetEntityCoords(Config.playerPedId)
+            Config.fpsSettings[type]()
             --Wait(0)
         end
         Config.fpsBoosterTypes[index].isFpsThreadRunning = false
@@ -139,7 +183,7 @@ local function runThreads(index)
                 ResetPedVisibleDamage(Config.playerPedId)
                 ClearOverrideWeather()
                 ClearHdArea()
-                DisableVehicleDistantlights(false)
+                DisableVehicleDistantlights(true)
                 --DisableScreenblurFade()
                 SetRainLevel(0.0)
                 SetWindSpeed(0.0)
@@ -155,6 +199,7 @@ local function runThreads(index)
                 LeaderboardsClearCacheData()
                 ClearFocus()
                 ClearHdArea()
+                DisableVehicleDistantlights(false)
                 SetWindSpeed(0.0)
             end
             Wait(2000)
