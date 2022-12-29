@@ -4,7 +4,7 @@ lua54 "yes"
 game "gta5"
 
 description "x-visual"
-version "0.0.0"
+version "1.0.0"
 
 files {
     "files/*"
