@@ -94,36 +94,30 @@ local function modifyWorldVehicles(alpha, distance)
 end
 
 Config.fpsSettings = {
-    ulow_alpha = { world = 210, ped = 245, vehicle = 255 },
-    ulow_distance = { world = 40, ped = 40, vehicle = 40 },
-    ulow = function()
-        modifyWorldObjects(Config.fpsSettings.ulow_alpha.world, Config.fpsSettings.ulow_distance.world)
-        modifyWorldPeds(Config.fpsSettings.ulow_alpha.ped, Config.fpsSettings.ulow_distance.ped)
-        modifyWorldVehicles(Config.fpsSettings.ulow_alpha.vehicle, Config.fpsSettings.ulow_distance.vehicle)
+    ulow = function(index)
+        modifyWorldObjects(Config.fpsBoosterTypes[index].alpha.world, Config.fpsBoosterTypes[index].distance.world)
+        modifyWorldPeds(Config.fpsBoosterTypes[index].alpha.ped, Config.fpsBoosterTypes[index].distance.ped)
+        modifyWorldVehicles(Config.fpsBoosterTypes[index].alpha.vehicle, Config.fpsBoosterTypes[index].distance.vehicle)
         DisableOcclusionThisFrame()
         SetDisableDecalRenderingThisFrame()
         RemoveParticleFxInRange(Config.playerCoords, 10.0)
         OverrideLodscaleThisFrame(0.4)
     end,
-    low_alpha = { world = 210, ped = 250, vehicle = 255 },
-    low_distance = { world = 60, ped = 60, vehicle = 60 },
-    low = function()
-        modifyWorldObjects(Config.fpsSettings.low_alpha.world, Config.fpsSettings.low_distance.world)
-        modifyWorldPeds(Config.fpsSettings.low_alpha.ped, Config.fpsSettings.low_distance.ped)
-        modifyWorldVehicles(Config.fpsSettings.low_alpha.vehicle, Config.fpsSettings.low_distance.vehicle)
+    low = function(index)
+        modifyWorldObjects(Config.fpsBoosterTypes[index].alpha.world, Config.fpsBoosterTypes[index].distance.world)
+        modifyWorldPeds(Config.fpsBoosterTypes[index].alpha.ped, Config.fpsBoosterTypes[index].distance.ped)
+        modifyWorldVehicles(Config.fpsBoosterTypes[index].alpha.vehicle, Config.fpsBoosterTypes[index].distance.vehicle)
         SetDisableDecalRenderingThisFrame()
         RemoveParticleFxInRange(Config.playerCoords, 10.0)
         OverrideLodscaleThisFrame(0.6)
     end,
-    medium_alpha = { world = 245, ped = 255, vehicle = 255 },
-    medium_distance = { world = 85, ped = 85, vehicle = 85 },
-    medium = function()
-        modifyWorldObjects(Config.fpsSettings.medium_alpha.world, Config.fpsSettings.medium_distance.world)
-        modifyWorldPeds(Config.fpsSettings.medium_alpha.ped, Config.fpsSettings.medium_distance.ped)
-        modifyWorldVehicles(Config.fpsSettings.medium_alpha.vehicle, Config.fpsSettings.medium_distance.vehicle)
+    medium = function(index)
+        modifyWorldObjects(Config.fpsBoosterTypes[index].alpha.world, Config.fpsBoosterTypes[index].distance.world)
+        modifyWorldPeds(Config.fpsBoosterTypes[index].alpha.ped, Config.fpsBoosterTypes[index].distance.ped)
+        modifyWorldVehicles(Config.fpsBoosterTypes[index].alpha.vehicle, Config.fpsBoosterTypes[index].distance.vehicle)
         OverrideLodscaleThisFrame(0.8)
     end,
-    reset = function()
+    reset = function(_)
         for obj in GetWorldObjects() do
             if GetEntityAlpha(obj) ~= 255 then
                 SetEntityAlpha(obj, 255)
@@ -157,7 +151,7 @@ local function runThreads(index)
         while Config.fpsBoosterTypes[index].isFpsThreadRunning and Config.fpsBoosterType == type do
             Config.playerPedId = PlayerPedId()
             Config.playerCoords = GetEntityCoords(Config.playerPedId)
-            Config.fpsSettings[type]()
+            Config.fpsSettings[type](index)
             --Wait(0)
         end
         Config.fpsBoosterTypes[index].isFpsThreadRunning = false
