@@ -36,18 +36,6 @@ local function GetWorldObjects()
     return EnumerateEntities(FindFirstObject, FindNextObject, EndFindObject)
 end
 
-local function GetWorldPeds()
-    return EnumerateEntities(FindFirstPed, FindNextPed, EndFindPed)
-end
-
-local function GetWorldVehicles()
-    return EnumerateEntities(FindFirstVehicle, FindNextVehicle, EndFindVehicle)
-end
-
-local function GetWorldPickups()
-    return EnumerateEntities(FindFirstPickup, FindNextPickup, EndFindPickup)
-end
-
 Config.fpsSettings = {
     ulow = function(playerPedId)
         for obj in GetWorldObjects() do
@@ -97,7 +85,7 @@ Config.fpsSettings = {
                 end
             else
                 if GetEntityAlpha(obj) == 0 then
-                    SetEntityAlpha(obj, 255)
+                    SetEntityAlpha(obj, 245)
                 end
             end
             SetPedAoBlobRendering(obj, true)
@@ -110,9 +98,9 @@ Config.fpsSettings = {
             if GetEntityAlpha(obj) ~= 255 then
                 SetEntityAlpha(obj, 255)
             end
+            SetPedAoBlobRendering(obj, true)
             Wait(0)
         end
-        SetPedAoBlobRendering(obj, true)
         OverrideLodscaleThisFrame(1.0)
     end
 }
@@ -126,7 +114,7 @@ local function runThreads(index)
         while Config.fpsBoosterTypes[index].isFpsThreadRunning and Config.fpsBoosterType == type do
             Config.playerPedId = PlayerPedId()
             Config.fpsSettings[type](Config.playerPedId)
-            Wait(0)
+            --Wait(0)
         end
         Config.fpsBoosterTypes[index].isFpsThreadRunning = false
     end)
@@ -183,8 +171,8 @@ local function stopThreads()
 end
 
 local function onFpsSettingChanged(shadow, air, entity, dynamic, tracker, depth, bounds, distance, tweak, sirens, lights)
-    CascadeShadowsClearShadowSampleType()
     RopeDrawShadowEnabled(shadow)
+    CascadeShadowsClearShadowSampleType()
     CascadeShadowsSetAircraftMode(air)
     CascadeShadowsEnableEntityTracker(entity)
     CascadeShadowsSetDynamicDepthMode(dynamic)
@@ -205,11 +193,11 @@ function BoostFPS(index)
         elseif Config.fpsBoosterTypes[index].type == "low" then
             onFpsSettingChanged(false, false, true, false, 0.0, 0.0, 0.0, 3.0, 3.0, false, true)
         elseif Config.fpsBoosterTypes[index].type == "medium" then
-            onFpsSettingChanged(true, false, false, false, 5.0, 3.0, 3.0, 5.0, 5.0, false, false)
+            onFpsSettingChanged(true, false, false, false, 5.0, 3.0, 5.0, 5.0, 5.0, false, false)
         end
     else -- Reset
         stopThreads()
-        onFpsSettingChanged(true, true, false, true, 5.0, 5.0, 5.0, 10.0, 10.0, false, false)
+        onFpsSettingChanged(true, true, false, true, 5.0, 5.0, 1.0, 10.0, 10.0, false, false)
         Config.fpsSettings["reset"]()
     end
 end
