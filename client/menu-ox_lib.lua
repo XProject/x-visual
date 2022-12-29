@@ -31,15 +31,39 @@ if Config.Menu == "ox_lib" then
         end)
         
         -- FPS Booster Menu
+        local function setUpFpsBoosterButtons()
+            local options = {}
+            for index in pairs(Config.fpsBoosterTypes) do
+                table.insert(options,{
+                    label = (Config.fpsBoosterTypes[index].icon or "❇").." "..Config.fpsBoosterTypes[index].name,
+                    description = Config.fpsBoosterTypes[index].description,
+                    args = { onClick = function()
+                        BoostFPS(index)
+                    end },
+                    close = false
+                })
+            end
+            table.insert(options,{
+                label = "🔁 Reset",
+                args = { onClick = function()
+                    BoostFPS()
+                end },
+                close = false
+            })
+            return options
+        end
         lib.registerMenu({
             id = Config.fpsMenu,
             title = "FPS Booster Menu",
             position = "top-right",
-            options = {
-                { label = "🆙 FPS Booster Menu" }
-            },
+            options = setUpFpsBoosterButtons(),
             onClose = goBack
-        })
+        },
+        function(_, _, args)
+            if args.onClick then
+                args.onClick()
+            end
+        end)
 
         -- Visual Modifier Menu
         local function setUpVisualTimecycleMenuButtons()
