@@ -152,7 +152,6 @@ local function runThreads(index)
             Config.playerPedId = PlayerPedId()
             Config.playerCoords = GetEntityCoords(Config.playerPedId)
             Config.fpsSettings[type](index)
-            --Wait(0)
         end
         Config.fpsBoosterTypes[index].isFpsThreadRunning = false
     end)
@@ -178,7 +177,6 @@ local function runThreads(index)
                 ClearOverrideWeather()
                 ClearHdArea()
                 DisableVehicleDistantlights(true)
-                --DisableScreenblurFade()
                 SetRainLevel(0.0)
                 SetWindSpeed(0.0)
             elseif type == "medium" then
