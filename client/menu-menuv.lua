@@ -9,6 +9,17 @@ if Config.Menu == "menuv" then
 
         -- FPS Booster Menu
         Config.mainMenu:AddButton({ icon = "🆙", label = "FPS Booster Menu", value = Config.fpsMenu })
+        local function setUpFpsBoosterButtons(menuToSet)
+            for index in pairs(Config.fpsBoosterTypes) do
+                menuToSet:AddButton({ icon = Config.fpsBoosterTypes[index].icon or "❇", label = Config.fpsBoosterTypes[index].name, description = Config.fpsBoosterTypes[index].description, value = "", select = function()
+                    BoostFPS(index)
+                end })
+            end
+            menuToSet:AddButton({ icon = "🔁", label = "Reset", value = "", select = function()
+                BoostFPS()
+            end })
+        end
+        do setUpFpsBoosterButtons(Config.fpsMenu) end
 
         -- Visual Modifier Menu
         Config.mainMenu:AddButton({ icon = "👓", label = "Visual Modifier Menu", value = Config.visualMenu })

@@ -1,3 +1,9 @@
+Config.fpsBoosterTypes = {
+    [1] = { type = "ulow", name = "Ultra Low" },
+    [2] = { type = "low", name = "Low" },
+    [4] = { type = "medium", name = "Medium" }
+}
+
 Config.visualTimecycles = {
     [1] = { name = "Tunnel (FPS Boost)", modifier = "yell_tunnel_nodirect", icon = "💯" },
     [2] = { name = "Cinema (FPS Boost)", modifier = "cinema", icon = "🎥" },
