@@ -1,3 +1,6 @@
+shared = {}
+shared.currentResourceName = GetCurrentResourceName()
+shared.stateBagName = ("%s:savedConfigurations"):format(shared.currentResourceName)
 if not IsDuplicityVersion() then -- client
     if Config.Menu == "ox_lib" then
         if GetResourceState("ox_lib"):find("start") then
