@@ -49,6 +49,12 @@ if Config.Menu == "menuv" then
                 { label = "1000x", value = 1000 }
             }})
             Config.multiplierSlider:On("change", function(item, newValue, _) Config.multiplier = item.Values[newValue].Value end)
+            Config.lightsMenu:AddButton({ icon = "💾", label = "Apply Saved Lights Settings", value = "", select = function()
+                ApplySavedLightConfigurations()
+            end })
+            Config.lightsMenu:AddButton({ icon = "💾", label = "Save Lights Settings", value = "", select = function()
+                SaveLightConfigurations()
+            end })
         end)
         local function setUpLightMenuButtons(menuToSet, timeToSet)
             for name, v in pairs(Config.vehicleLightsSetting) do
