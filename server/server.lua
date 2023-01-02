@@ -46,7 +46,7 @@ local function finit(source)
     end
 end
 
-RegisterNetEvent(shared.currentResourceName..":savePlayerConfigurations", function(configurations)
+RegisterNetEvent(shared.netEventName, function(configurations)
     if not source then return end
     savePlayerConfigurations(source, configurations)
 end)
