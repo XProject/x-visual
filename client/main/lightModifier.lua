@@ -15,8 +15,8 @@ function ApplySavedLightConfigurations()
     local savedConfigurations = LocalPlayer.state[shared.stateBagName]
     if not savedConfigurations then return end
     for name, v in pairs(Config.vehicleLightsSetting) do
-        for time, light in pairs(v) do
-            if savedConfigurations[name] then
+        if savedConfigurations[name] then
+            for time, light in pairs(v) do
                 light.modifiedValue = savedConfigurations[name][time]
                 if light.modifiedValue then
                     SetVisualSettingFloat(("car.%s.%s.emissive.on"):format(name, time), light.modifiedValue + 0.0)
