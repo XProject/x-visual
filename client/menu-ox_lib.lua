@@ -102,7 +102,7 @@ if Config.Menu == "ox_lib" then
         -- Vehicle Lights Menu
         Config.multiplier = 1
         local onLightSettingChanged -- forward declaration of local function to be known to generateLightButton function
-        local registerDayLightMenu, registerNightLightMenu -- forward declaration of local function to be known to other functions
+        local registerDayLightMenu, registerNightLightMenu -- forward declaration of local functions to be known to other functions
         local function calculateLightProgress(light)
             local max = light.max / Config.multiplier
             local value = (light.modifiedValue or light.defaultValue) / Config.multiplier
