@@ -20,13 +20,15 @@ server_scripts {
 
 client_scripts {
     "shared/config.lua",
-    "client/main.lua",
-    "client/*.lua"
+    "client/main/main.lua",
+    "client/**/*.lua",
+    "client/*.lua",
 }
 
 escrow_ignore {
     "files/*",
     "shared/*.lua",
     "server/*.lua",
-    "client/*.lua"
+    "client/**/*.lua",
+    "client/*.lua",
 }
