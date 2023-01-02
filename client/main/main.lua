@@ -1,7 +1,7 @@
 Config.fpsBoosterTypes = {
     [1] = { type = "ulow", name = "Ultra Low", distance = { world = 60, ped = 60, vehicle = 60 }, alpha = { world = 210, ped = 245, vehicle = 255 } },
     [2] = { type = "low", name = "Low", distance = { world = 90, ped = 90, vehicle = 90 }, alpha = { world = 210, ped = 250, vehicle = 255 } },
-    [4] = { type = "medium", name = "Medium", distance = { world = 120, ped = 120, vehicle = 120 }, alpha = { world = 245, ped = 255, vehicle = 255 } }
+    [3] = { type = "medium", name = "Medium", distance = { world = 120, ped = 120, vehicle = 120 }, alpha = { world = 245, ped = 255, vehicle = 255 } }
 }
 
 Config.visualTimecycles = {
@@ -11,7 +11,7 @@ Config.visualTimecycles = {
     [4] = { name = "Reduce Distance (FPS Boost)", modifier = "ReduceDrawDistanceMission", icon = "⬇" },
     [5] = { name = "Color Saturation", modifier = "rply_saturation", icon = "✨" },
     [6] = { name = "Graphic Changer", modifier = "MP_Powerplay_blend", extraModifier = "reflection_correct_ambient" },
-    [8] = { name = "Improved Lights", modifier = "tunnel" }
+    [7] = { name = "Improved Lights", modifier = "tunnel" }
 }
 
 Config.vehicleLightsSetting = {

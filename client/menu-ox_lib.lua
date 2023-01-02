@@ -33,7 +33,7 @@ if Config.Menu == "ox_lib" then
         -- FPS Booster Menu
         local function setUpFpsBoosterButtons()
             local options = {}
-            for index in pairs(Config.fpsBoosterTypes) do
+            for index = 1, #Config.fpsBoosterTypes do
                 table.insert(options,{
                     label = (Config.fpsBoosterTypes[index].icon or "❇").." "..Config.fpsBoosterTypes[index].name,
                     description = Config.fpsBoosterTypes[index].description,
@@ -68,14 +68,11 @@ if Config.Menu == "ox_lib" then
         -- Visual Modifier Menu
         local function setUpVisualTimecycleMenuButtons()
             local options = {}
-            for index in pairs(Config.visualTimecycles) do
+            for index = 1, #Config.visualTimecycles do
                 table.insert(options, {
                     label = (Config.visualTimecycles[index].icon or "❇").." "..Config.visualTimecycles[index].name,
                     args = { onClick = function()
-                        ClearTimecycleModifier()
-                        ClearExtraTimecycleModifier()
-                        SetTimecycleModifier(Config.visualTimecycles[index].modifier)
-                        if Config.visualTimecycles[index].extraModifier then SetExtraTimecycleModifier(Config.visualTimecycles[index].extraModifier) end
+                        ModifyVisuals(index)
                     end },
                     close = false
                 })
@@ -83,11 +80,7 @@ if Config.Menu == "ox_lib" then
             table.insert(options, {
                 label = "🔁 Reset",
                 args = { onClick = function()
-                    ClearTimecycleModifier()
-                    ClearExtraTimecycleModifier()
-                    SetTimecycleModifier()
-                    ClearTimecycleModifier()
-                    ClearExtraTimecycleModifier()
+                    ModifyVisuals()
                 end },
                 close = false
             })

@@ -10,7 +10,7 @@ if Config.Menu == "menuv" then
         -- FPS Booster Menu
         Config.mainMenu:AddButton({ icon = "🆙", label = "FPS Booster Menu", value = Config.fpsMenu })
         local function setUpFpsBoosterButtons(menuToSet)
-            for index in pairs(Config.fpsBoosterTypes) do
+            for index = 1, #Config.fpsBoosterTypes do
                 menuToSet:AddButton({ icon = Config.fpsBoosterTypes[index].icon or "❇", label = Config.fpsBoosterTypes[index].name, description = Config.fpsBoosterTypes[index].description, value = "", select = function()
                     BoostFPS(index)
                 end })
@@ -24,20 +24,13 @@ if Config.Menu == "menuv" then
         -- Visual Modifier Menu
         Config.mainMenu:AddButton({ icon = "👓", label = "Visual Modifier Menu", value = Config.visualMenu })
         local function setUpVisualTimecycleMenuButtons(menuToSet)
-            for index in pairs(Config.visualTimecycles) do
+            for index = 1, #Config.visualTimecycles do
                 menuToSet:AddButton({ icon = Config.visualTimecycles[index].icon or "❇", label = Config.visualTimecycles[index].name, value = "", select = function()
-                    ClearTimecycleModifier()
-                    ClearExtraTimecycleModifier()
-                    SetTimecycleModifier(Config.visualTimecycles[index].modifier)
-                    if Config.visualTimecycles[index].extraModifier then SetExtraTimecycleModifier(Config.visualTimecycles[index].extraModifier) end
+                    ModifyVisuals(index)
                 end })
             end
             menuToSet:AddButton({ icon = "🔁", label = "Reset", value = "", select = function()
-                ClearTimecycleModifier()
-                ClearExtraTimecycleModifier()
-                SetTimecycleModifier()
-                ClearTimecycleModifier()
-                ClearExtraTimecycleModifier()
+                ModifyVisuals()
             end })
         end
         do setUpVisualTimecycleMenuButtons(Config.visualMenu) end
