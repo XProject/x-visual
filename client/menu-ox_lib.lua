@@ -102,6 +102,7 @@ if Config.Menu == "ox_lib" then
         -- Vehicle Lights Menu
         Config.multiplier = 1
         local onLightSettingChanged -- forward declaration of local function to be known to generateLightButton function
+        local registerDayLightMenu, registerNightLightMenu -- forward declaration of local function to be known to other functions
         local function calculateLightProgress(light)
             local max = light.max / Config.multiplier
             local value = (light.modifiedValue or light.defaultValue) / Config.multiplier
@@ -151,6 +152,12 @@ if Config.Menu == "ox_lib" then
                 { label = "💡 Vehicle Lights Menu (DAY)", args = { menu = Config.dayLightsMenu } },
                 { label = "💡 Vehicle Lights Menu (NIGHT)", args = { menu = Config.nightLightsMenu } },
                 { label = "Ⓜ Multiplier", values = { "1x", "10x", "100x", "1000x" }, defaultIndex = Config.multiplier, close = false },
+                { label = "💾 Apply Saved Lights Settings", args = { onClick = function()
+                    ApplySavedLightConfigurations()
+                    registerDayLightMenu()
+                    registerNightLightMenu()
+                end }, close = false },
+                { label = "💾 Save Lights Settings", args = { onClick = function() SaveLightConfigurations() end }, close = false },
             },
             onClose = goBack,
             onSideScroll = function(selected, scrollIndex, _)
@@ -167,38 +174,48 @@ if Config.Menu == "ox_lib" then
             end,
         },
         function(_, _, args)
-            if args and args.menu then
-                lib.showMenu(args.menu)
+            if args then
+                if args.menu then
+                    lib.showMenu(args.menu)
+                elseif args.onClick then
+                    args.onClick()
+                end
             end
         end)
-        lib.registerMenu({
-            id = Config.dayLightsMenu,
-            title = "Vehicle Lights Menu (DAY)",
-            position = "top-right",
-            options = setUpLightMenuButtons("day"),
-            onClose = function(keyPressed)
-                goBack(keyPressed, Config.lightsMenu)
-            end
-        },
-        function(selected, _, args)
-            if args and args.onClick then
-                args.onClick(selected)
-            end
-        end)
-        lib.registerMenu({
-            id = Config.nightLightsMenu,
-            title = "Vehicle Lights Menu (NIGHT)",
-            position = "top-right",
-            options = setUpLightMenuButtons("night"),
-            onClose = function(keyPressed)
-                goBack(keyPressed, Config.lightsMenu)
-            end
-        },
-        function(selected, _, args)
-            if args and args.onClick then
-                args.onClick(selected)
-            end
-        end)
+        function registerDayLightMenu()
+            lib.registerMenu({
+                id = Config.dayLightsMenu,
+                title = "Vehicle Lights Menu (DAY)",
+                position = "top-right",
+                options = setUpLightMenuButtons("day"),
+                onClose = function(keyPressed)
+                    goBack(keyPressed, Config.lightsMenu)
+                end
+            },
+            function(selected, _, args)
+                if args and args.onClick then
+                    args.onClick(selected)
+                end
+            end)
+        end
+        do registerDayLightMenu() end
+        function registerNightLightMenu()
+            lib.registerMenu({
+                id = Config.nightLightsMenu,
+                title = "Vehicle Lights Menu (NIGHT)",
+                position = "top-right",
+                options = setUpLightMenuButtons("night"),
+                onClose = function(keyPressed)
+                    goBack(keyPressed, Config.lightsMenu)
+                end
+            },
+            function(selected, _, args)
+                if args and args.onClick then
+                    args.onClick(selected)
+                end
+            end)
+        end
+        do registerNightLightMenu() end
     else
         error("Error: ox_lib resource is not properly loaded inside x-visual!")
     end
