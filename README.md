@@ -22,7 +22,7 @@
 <tr><td>
 <h3 align='center'>Legal Notices</h3>
 <tr><td>
-<p align='center'><strong>Copyright (C) 2022 Project-X (Mahan Moulaei)</p>
+<p align='center'><strong>Copyright (C) 2022-2023 Project-X (Mahan Moulaei)</p>
 <p align='center'>DO NOT SELL THIS. THE ONLY AUTHORIZED ORGANIZATION TO SELL IS <a href="https://project-x.tebex.io/">PROJECT-X.TEBEX.IO</a></strong></p>
 </td></tr>
     
