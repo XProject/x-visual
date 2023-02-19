@@ -1,7 +1,8 @@
-# x-visual
-<p>Modify Visuals and Vehicle Lights&#39; Intensity with an FPS Booster Menu included.</p>
+<h1 align="center"><b>X-VISUAL</b></h1>
+<h3 align="center">Modify Visuals and Vehicle Lights&#39; Intensity with an FPS Booster Menu included</h3>
+<h3 align="center"><a href="https://www.youtube.com/watch?v=FzOCwg0YexU"><strong>SHOWCASE</strong></a></h3>
 
-<p><a href="https://www.youtube.com/watch?v=FzOCwg0YexU" rel="noreferrer noopener" target="_blank"><strong><span style="font-size:24px;"><u>Showcase</u></span></strong></a></p>
+<hr>
 
 <p><strong><u><span style="font-family:Arial, Helvetica, sans-serif;font-size:18px;">Features</span></u></strong></p>
 
