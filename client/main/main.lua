@@ -1,7 +1,7 @@
 Config.fpsBoosterTypes = {
-    [1] = { type = "ulow", name = "Ultra Low", distance = { world = 120, ped = 120, vehicle = 120 }, alpha = { world = 210, ped = 245, vehicle = 255 } },
-    [2] = { type = "low", name = "Low", distance = { world = 160, ped = 160, vehicle = 160 }, alpha = { world = 210, ped = 250, vehicle = 255 } },
-    [3] = { type = "medium", name = "Medium", distance = { world = 200, ped = 200, vehicle = 200 }, alpha = { world = 245, ped = 255, vehicle = 255 } }
+    [1] = { type = "ulow", name = "Ultra Low", distance = { world = 90, ped = 60, vehicle = 120 }, alpha = { world = 210, ped = 245, vehicle = 255 } },
+    [2] = { type = "low", name = "Low", distance = { world = 130, ped = 100, vehicle = 160 }, alpha = { world = 210, ped = 250, vehicle = 255 } },
+    [3] = { type = "medium", name = "Medium", distance = { world = 200, ped = 150, vehicle = 250 }, alpha = { world = 245, ped = 255, vehicle = 255 } }
 }
 
 Config.visualTimecycles = {

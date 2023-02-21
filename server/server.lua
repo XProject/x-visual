@@ -1,4 +1,3 @@
--- TODO: Possibly save vehicle lights configuration as KVP, if requested enough...
 local savedFileName = "playersConfigurations"
 
 local function getPlayerIdentifier(source)

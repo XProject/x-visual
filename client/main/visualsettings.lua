@@ -1,5 +1,6 @@
 CreateThread(function()
     local settingsFile = LoadResourceFile(GetCurrentResourceName(), "files/visualsettings.dat")
+    if not settingsFile then return end
     local lines = stringsplit(settingsFile, "\n")
     for _, v in ipairs(lines) do
         if not starts_with(v, '#') and not starts_with(v, '//') and (v ~= "" or v ~= " ") and #v > 1 then
