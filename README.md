@@ -1,4 +1,7 @@
 <h1 align="center"><b>X-VISUAL</b></h1>
+
+![image](https://user-images.githubusercontent.com/75180223/225782273-482d3626-1a8d-49a2-a164-3cb296607e08.png)
+
 <h3 align="center">Modify Visuals and Vehicle Lights&#39; Intensity with an FPS Booster Menu included</h3>
 <h3 align="center"><a href="https://www.youtube.com/watch?v=FzOCwg0YexU"><strong>SHOWCASE</strong></a></h3>
 
