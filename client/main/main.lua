@@ -57,4 +57,4 @@ RegisterCommand(Config.Command, function()
     elseif Config.Menu == "menuv" and MenuV then
         MenuV:OpenMenu(Config.mainMenu)
     end
-end)
+end, false)

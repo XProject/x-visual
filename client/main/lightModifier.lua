@@ -8,12 +8,13 @@ function SaveLightConfigurations()
             end
         end
     end
-    TriggerServerEvent(shared.netEventName, savedConfigurations)
+    TriggerServerEvent(Shared.netEventName, savedConfigurations)
+    Shared.notification(nil, "Lights Configurations Saved", "success")
 end
 
 function ApplySavedLightConfigurations()
-    local savedConfigurations = LocalPlayer.state[shared.stateBagName]
-    if not savedConfigurations then return end
+    local savedConfigurations = LocalPlayer.state[Shared.stateBagName]
+    if not savedConfigurations then return Shared.notification(nil, "No Saved Lights Configurations Exists!", "error") end
     for name, v in pairs(Config.vehicleLightsSetting) do
         if savedConfigurations[name] then
             for time, light in pairs(v) do
@@ -24,4 +25,5 @@ function ApplySavedLightConfigurations()
             end
         end
     end
+    Shared.notification(nil, "Saved Lights Configurations Applied", "success")
 end

@@ -1,8 +1,14 @@
-shared = {}
-shared.currentResourceName = GetCurrentResourceName()
-shared.stateBagName = ("%s:savedConfigurations"):format(shared.currentResourceName)
-shared.netEventName = ("%s:savePlayerConfigurations"):format(shared.currentResourceName)
-if not IsDuplicityVersion() then -- client
+Shared = {}
+
+Shared.currentResourceName = GetCurrentResourceName()
+
+Shared.stateBagName = ("%s:savedConfigurations"):format(Shared.currentResourceName)
+
+Shared.netEventName = ("%s:savePlayerConfigurations"):format(Shared.currentResourceName)
+
+Shared.isDuplicityVersion = IsDuplicityVersion()
+
+if not Shared.isDuplicityVersion then -- client
     if Config.Menu == "ox_lib" then
         if GetResourceState("ox_lib"):find("start") then
             local file = 'init.lua'
@@ -17,6 +23,29 @@ if not IsDuplicityVersion() then -- client
             local chunk = assert(load(import, ('@@menuv/%s'):format(file)))
             chunk()
         end
+    end
+end
+
+function Shared.notification(source, message, type, duration)
+    local data = {
+        title = Shared.currentResourceName:upper(),
+        description = message,
+        type = type or "inform",
+        duration = duration or 5000,
+        position = "center-right"
+    }
+    if not Shared.isDuplicityVersion then
+        return TriggerEvent("ox_lib:notify", data)
+        -- return TriggerEvent("t-notify:client:Custom", {title = data.title, message = message, style = type or "info", duration = data.duration})
+        -- return TriggerEvent("esx:showNotification", message, type or "info", data.duration)
+        -- return TriggerEvent("QBCore:Notify", message, type or "primary", data.duration)
+        -- return TriggerEvent("okokNotify:Alert", message, nil, data.duration, type or "info")
+    else
+        return TriggerClientEvent("ox_lib:notify", source, data)
+        -- return TriggerClientEvent("t-notify:client:Custom", source, {title = data.title, message = message, style = type or "info", duration = data.duration})
+        -- return TriggerClientEvent("esx:showNotification", source, message, type or "info", data.duration)
+        -- return TriggerClientEvent("QBCore:Notify", source, message, type or "primary", data.duration)
+        -- return TriggerClientEvent("okokNotify:Alert", source, message, nil, data.duration, type or "info")
     end
 end
 
