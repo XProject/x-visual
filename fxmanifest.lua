@@ -1,10 +1,12 @@
-fx_version "cerulean"
-use_experimental_fxv2_oal "yes"
-lua54 "yes"
-game "gta5"
+fx_version  "cerulean"
+use_experimental_fxv2_oal   "yes"
+lua54       "yes"
+game        "gta5"
 
-description "x-visual"
-version "1.1.0"
+name        "x-visual"
+version     "1.1.5"
+repository  "https://github.com/XProject/x-visual"
+description "Project-X Visual: Resource to Modify Visuals & Vehicle Lights' Intensity In-Game & on Runtime"
 
 files {
     "files/*"
